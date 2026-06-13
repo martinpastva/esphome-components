@@ -2748,14 +2748,17 @@ void gsl_DataInit(unsigned int *conf_in)
 	int len;
 
 	gsl_id_reg_init(1);
+ESP_LOGI(TAG, "GSL A"); // TODO
 	for (i = 0; i < POINT_MAX; i++)
 		point_now[i].all = 0;
 	conf = config_static;
 	coordinate_correct_able = 0;
+ESP_LOGI(TAG, "GSL B"); // TODO
 	for (i = 0; i < 32; i++) {
 		coordinate_correct_coe_x[i] = i;
 		coordinate_correct_coe_y[i] = i;
 	}
+ESP_LOGI(TAG, "GSL X"); // TODO
 	id_first_coe = 8;
 	id_speed_coe = 128 * 128;
 	id_static_coe = 64 * 64;
@@ -2766,15 +2769,18 @@ void gsl_DataInit(unsigned int *conf_in)
 	report_ahead = 0x9249249;
 	report_delete = 0;
 
+ESP_LOGI(TAG, "GSL D"); // TODO
 	for (i = 0; i < 4; i++)
 		median_dis[i] = 0;
 	shake_min = 0 * 0;
+ESP_LOGI(TAG, "GSL E"); // TODO
 	for (i = 0; i < 2; i++) {
 		match_y[i] = 0;
 		match_x[i] = 0;
 		ignore_y[i] = 0;
 		ignore_x[i] = 0;
 	}
+ESP_LOGI(TAG, "GSL F"); // TODO
 	match_y[0] = 4096;
 	match_x[0] = 4096;
 	screen_y_max = 480;
@@ -2784,12 +2790,16 @@ void gsl_DataInit(unsigned int *conf_in)
 	sen_num = 10;
 	drv_num_nokey = 16;
 	sen_num_nokey = 10;
+ESP_LOGI(TAG, "GSL G"); // TODO
 	for (i = 0; i < 4; i++)
 		edge_cut[i] = 0;
+ESP_LOGI(TAG, "GSL H"); // TODO
 	for (i = 0; i < 32; i++)
 		stretch_array[i] = 0;
+ESP_LOGI(TAG, "GSL I"); // TODO
 	for (i = 0; i < 16; i++)
 		shake_all_array[i] = 0;
+ESP_LOGI(TAG, "GSL J"); // TODO
 	reset_mask_dis = 0;
 	reset_mask_type = 0;
 	edge_start = 0;
@@ -2798,6 +2808,7 @@ void gsl_DataInit(unsigned int *conf_in)
 	key_map_able = 0;
 	for (i = 0; i < 8 * 3; i++)
 		key_range_array[i] = 0;
+ESP_LOGI(TAG, "GSL K"); // TODO
 	filter_able = 0;
 	filter_coe[0] = (0 << 6 * 4) + (0 << 6 * 3) + (0 << 6 * 2) +
 			(40 << 6 * 1) + (24 << 6 * 0);
@@ -2807,10 +2818,12 @@ void gsl_DataInit(unsigned int *conf_in)
 			(16 << 6 * 1) + (8 << 6 * 0);
 	filter_coe[3] = (6 << 6 * 4) + (16 << 6 * 3) + (24 << 6 * 2) +
 			(12 << 6 * 1) + (6 << 6 * 0);
+ESP_LOGI(TAG, "GSL L"); // TODO
 	for (i = 0; i < 4; i++) {
 		multi_x_array[i] = 0;
 		multi_y_array[i] = 0;
 	}
+ESP_LOGI(TAG, "GSL M"); // TODO
 	point_repeat[0] = 32;
 	point_repeat[1] = 96;
 	edge_first = 0;
@@ -2820,10 +2833,14 @@ void gsl_DataInit(unsigned int *conf_in)
 	press_move = 0;
 	stretch_mult = 0;
 	/* ---------------------------------------------- */
-	if (conf_in == NULL)
+	if (conf_in == NULL) {
+ESP_LOGI(TAG, "GSL N"); // TODO
 		return;
+}
 
+ESP_LOGI(TAG, "GSL O"); // TODO
 	if (conf_in[0] <= 0xfff) {
+ESP_LOGI(TAG, "GSL P"); // TODO
 		if (ConfigCoorMulti(conf_in))
 			len = 512;
 		else if (ConfigFilter(conf_in))
@@ -2832,15 +2849,19 @@ void gsl_DataInit(unsigned int *conf_in)
 			len = 241;
 		else
 			len = 215;
+ESP_LOGI(TAG, "GSL P end"); // TODO
 	} else if (conf_in[1] <= CONFIG_LENGTH)
 		len = conf_in[1];
 	else
 		len = CONFIG_LENGTH;
+ESP_LOGI(TAG, "GSL Q"); // TODO
 	for (i = 0; i < len; i++)
 		conf[i] = conf_in[i];
 	for (; i < CONFIG_LENGTH; i++)
 		conf[i] = 0;
+ESP_LOGI(TAG, "GSL R"); // TODO
 	if (conf_in[0] <= 0xfff) {
+ESP_LOGI(TAG, "GSL S"); // TODO
 		coordinate_correct_able = conf[0];
 		drv_num = conf[1];
 		sen_num = conf[2];
@@ -2858,41 +2879,54 @@ void gsl_DataInit(unsigned int *conf_in)
 		screen_x_max = conf[16];
 		point_num_max = conf[17];
 		global_flag.all = conf[18];
+ESP_LOGI(TAG, "GSL T"); // TODO
 		for (i = 0; i < 4; i++)
 			median_dis[i] = (unsigned char)conf[19 + i];
+ESP_LOGI(TAG, "GSL U"); // TODO
 		for (i = 0; i < 2; i++) {
 			match_y[i] = conf[23 + i];
 			match_x[i] = conf[25 + i];
 			ignore_y[i] = conf[27 + i];
 			ignore_x[i] = conf[29 + i];
 		}
+ESP_LOGI(TAG, "GSL V"); // TODO
 		for (i = 0; i < 64; i++) {
 			coordinate_correct_coe_x[i] = conf[31 + i];
 			coordinate_correct_coe_y[i] = conf[95 + i];
 		}
+ESP_LOGI(TAG, "GSL W"); // TODO
 		for (i = 0; i < 4; i++)
 			edge_cut[i] = conf[159 + i];
+ESP_LOGI(TAG, "GSL X"); // TODO
 		for (i = 0; i < 32; i++)
 			stretch_array[i] = conf[163 + i];
+ESP_LOGI(TAG, "GSL Y"); // TODO
 		for (i = 0; i < 16; i++)
 			shake_all_array[i] = conf[195 + i];
+ESP_LOGI(TAG, "GSL Z"); // TODO
 		reset_mask_dis = conf[213];
 		reset_mask_type = conf[214];
 		edge_start = conf[216];
 		key_map_able = conf[217];
+ESP_LOGI(TAG, "GSL AA"); // TODO
 		for (i = 0; i < 8 * 3; i++)
 			key_range_array[i] = conf[218 + i];
+ESP_LOGI(TAG, "GSL AB"); // TODO
 		filter_able = conf[242];
 		for (i = 0; i < 4; i++)
 			filter_coe[i] = conf[243 + i];
+ESP_LOGI(TAG, "GSL AC"); // TODO
 		for (i = 0; i < 4; i++)
 			multi_x_array[i] = conf[247 + i];
+ESP_LOGI(TAG, "GSL AD"); // TODO
 		for (i = 0; i < 4; i++)
 			multi_y_array[i] = conf[251 + i];
+ESP_LOGI(TAG, "GSL AE"); // TODO
 		diagonal = conf[255];
 		for (j = 0; j < 4; j++)
 			for (i = 0; i < 64; i++)
 				multi_group[j][i] = conf[256 + i + j * 64];
+ESP_LOGI(TAG, "GSL AF"); // TODO
 		for (j = 0; j < 4; j++) {
 			for (i = 0; i < 8; i++) {
 				ps_coe[j][i] = conf[256 + 64 * 3 + i + j * 8];
@@ -2900,10 +2934,12 @@ void gsl_DataInit(unsigned int *conf_in)
 					conf[256 + 64 * 3 + i + j * 8 + 32];
 			}
 		}
+ESP_LOGI(TAG, "GSL AG"); // TODO
 		/* ----------------------- */
 		/* near_set[0] = 0; */
 		/* near_set[1] = 0; */
 	} else {
+ESP_LOGI(TAG, "GSL AH"); // TODO
 		global_flag.all = conf[0x10];
 		point_num_max = conf[0x11];
 		drv_num = conf[0x12] & 0xffff;
@@ -2917,6 +2953,7 @@ void gsl_DataInit(unsigned int *conf_in)
 		reset_mask_type = conf[0x17];
 		point_repeat[0] = conf[0x18] >> 16;
 		point_repeat[1] = conf[0x18] & 0xffff;
+ESP_LOGI(TAG, "GSL AI"); // TODO
 		/* conf[0x19~0x1f] */
 		/* near_set[0] = conf[0x19]>>16; */
 		/* near_set[1] = conf[0x19]&0xffff; */
@@ -2945,14 +2982,17 @@ void gsl_DataInit(unsigned int *conf_in)
 		edge_cut[3] = (conf[0x27] >> 0) & 0xff;
 		report_delay = conf[0x28];
 		shake_min = conf[0x29];
+ESP_LOGI(TAG, "GSL AJ"); // TODO
 		for (i = 0; i < 16; i++) {
 			stretch_array[i * 2 + 0] = conf[0x2a + i] & 0xffff;
 			stretch_array[i * 2 + 1] = conf[0x2a + i] >> 16;
 		}
+ESP_LOGI(TAG, "GSL AK"); // TODO
 		for (i = 0; i < 8; i++) {
 			shake_all_array[i * 2 + 0] = conf[0x3a + i] & 0xffff;
 			shake_all_array[i * 2 + 1] = conf[0x3a + i] >> 16;
 		}
+ESP_LOGI(TAG, "GSL AL"); // TODO
 		report_ahead = conf[0x42];
 		/* key_dead_time			= conf[0x43]; */
 		/* point_dead_time			= conf[0x44]; */
@@ -2965,21 +3005,25 @@ void gsl_DataInit(unsigned int *conf_in)
 		report_delete = conf[0x4b];
 		stretch_mult = conf[0x4c];
 
+ESP_LOGI(TAG, "GSL AM"); // TODO
 		for (i = 0; i < 16; i++) {
 			stretch_active[i * 2 + 0] = conf[0x50 + i] & 0xffff;
 			stretch_active[i * 2 + 1] = conf[0x50 + i] >> 16;
 		}
+ESP_LOGI(TAG, "GSL AN"); // TODO
 		/* goto_test */
 
 		key_map_able = conf[0x60];
 		for (i = 0; i < 8 * 3; i++)
 			key_range_array[i] = conf[0x61 + i];
 
+ESP_LOGI(TAG, "GSL AO"); // TODO
 		coordinate_correct_able = conf[0x100];
 		for (i = 0; i < 4; i++) {
 			multi_x_array[i] = conf[0x101 + i];
 			multi_y_array[i] = conf[0x105 + i];
 		}
+ESP_LOGI(TAG, "GSL AP"); // TODO
 		for (i = 0; i < 64; i++) {
 			coordinate_correct_coe_x[i] =
 				(conf[0x109 + i / 4] >> (i % 4 * 8)) & 0xff;
@@ -2987,24 +3031,28 @@ void gsl_DataInit(unsigned int *conf_in)
 				(conf[0x109 + 64 / 4 + i / 4] >> (i % 4 * 8)) &
 				0xff;
 		}
+ESP_LOGI(TAG, "GSL AQ"); // TODO
 		for (j = 0; j < 4; j++)
 			for (i = 0; i < 64; i++)
 				multi_group[j][i] = (conf[0x109 + 64 / 4 * 2 +
 							  (i + j * 64) / 4] >>
 						     ((i + j * 64) % 4 * 8)) &
 						    0xff;
-
+ESP_LOGI(TAG, "GSL AR"); // TODO
 		filter_able = conf[0x180];
 		for (i = 0; i < 4; i++)
 			filter_coe[i] = conf[0x181 + i];
+ESP_LOGI(TAG, "GSL AS"); // TODO
 		for (i = 0; i < 4; i++)
 			median_dis[i] = (unsigned char)conf[0x185 + i];
+ESP_LOGI(TAG, "GSL AT"); // TODO
 		for (j = 0; j < 4; j++) {
 			for (i = 0; i < 8; i++) {
 				ps_coe[j][i] = conf[0x189 + i + j * 8];
 				pr_coe[j][i] = conf[0x189 + i + j * 8 + 32];
 			}
 		}
+ESP_LOGI(TAG, "GSL AU"); // TODO
 	}
 	/* --------------------------------------------- */
 	gsl_id_reg_init(0);
@@ -3017,6 +3065,7 @@ void gsl_DataInit(unsigned int *conf_in)
 				shake_all_array[i * 2] & ~0x8000;
 		else
 			shake_all_array[i * 2] = Sqrt(shake_all_array[i * 2]);
+ESP_LOGI(TAG, "GSL AV"); // TODO
 	}
 	for (i = 0; i < 2; i++) {
 		if (match_x[i] & 0x8000)
@@ -3028,8 +3077,10 @@ void gsl_DataInit(unsigned int *conf_in)
 		if (ignore_y[i] & 0x8000)
 			ignore_y[i] |= 0xffff0000;
 	}
+ESP_LOGI(TAG, "GSL AW"); // TODO
 	for (i = 0; i < CONFIG_LENGTH; i++)
 		config_static[i] = 0;
+ESP_LOGI(TAG, "GSL AX"); // TODO
 }
 
 
