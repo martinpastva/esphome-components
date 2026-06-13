@@ -63,7 +63,7 @@ DOMAIN = "guition_mipi_dsi"
 
 LOGGER = logging.getLogger(DOMAIN)
 
-MIPI_DSI = mipi_dsi_ns.class_("GUITION_MIPI_DSI", display.Display, cg.Component)
+GUITION_MIPI_DSI = mipi_dsi_ns.class_("GUITION_MIPI_DSI", display.Display, cg.Component)
 ColorOrder = display.display_ns.enum("ColorMode")
 ColorBitness = display.display_ns.enum("ColorBitness")
 
@@ -123,7 +123,7 @@ def model_schema(config):
     schema = display.FULL_DISPLAY_SCHEMA.extend(
         {
             model.option(CONF_RESET_PIN, cv.UNDEFINED): pins.gpio_output_pin_schema,
-            cv.GenerateID(): cv.declare_id(MIPI_DSI),
+            cv.GenerateID(): cv.declare_id(GUITION_MIPI_DSI),
             cv_dimensions(CONF_DIMENSIONS): dimension_schema(
                 model.get_default(CONF_DRAW_ROUNDING, 1)
             ),
