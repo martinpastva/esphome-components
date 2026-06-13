@@ -2820,9 +2820,8 @@ IRAM_ATTR void gsl_DataInit(unsigned int *conf_in)
 	press_move = 0;
 	stretch_mult = 0;
 	/* ---------------------------------------------- */
-	if (conf_in == NULL) {
+	if (conf_in == NULL)
 		return;
-}
 
 	if (conf_in[0] <= 0xfff) {
 		if (ConfigCoorMulti(conf_in))
@@ -3017,7 +3016,6 @@ IRAM_ATTR void gsl_DataInit(unsigned int *conf_in)
 				shake_all_array[i * 2] & ~0x8000;
 		else
 			shake_all_array[i * 2] = Sqrt(shake_all_array[i * 2]);
-ESP_LOGI(TAG, "GSL AV"); // TODO
 	}
 	for (i = 0; i < 2; i++) {
 		if (match_x[i] & 0x8000)
@@ -3029,10 +3027,8 @@ ESP_LOGI(TAG, "GSL AV"); // TODO
 		if (ignore_y[i] & 0x8000)
 			ignore_y[i] |= 0xffff0000;
 	}
-ESP_LOGI(TAG, "GSL AW"); // TODO
 	for (i = 0; i < CONFIG_LENGTH; i++)
 		config_static[i] = 0;
-ESP_LOGI(TAG, "GSL AX"); // TODO
 }
 
 
