@@ -2689,7 +2689,7 @@ int gsl_TouchNear(void)
 }
 /* EXPORT_SYMBOL(gsl_TouchNear); */
 
-static void gsl_id_reg_init(int flag)
+IRAM_ATTR static void gsl_id_reg_init(int flag)
 {
 	int i, j;
 
@@ -2742,7 +2742,7 @@ static int DataCheck(void)
 	return 1;
 }
 
-void gsl_DataInit(unsigned int *conf_in)
+IRAM_ATTR void gsl_DataInit(unsigned int *conf_in)
 {
 	int i, j;
 	unsigned int *conf;
