@@ -30,6 +30,13 @@ wifi:
     ssid: ${device_name}
     password: ${wifi_password}
 
+external_components:  
+  - source: github://martinpastva/esphome-components@main
+    refresh: 0s
+    components:
+      - guition_mipi_dsi
+      - gsl3680
+
 esp32:
   board: esp32-p4-evboard
   cpu_frequency: 400MHz
@@ -38,24 +45,6 @@ esp32:
     type: esp-idf
     advanced:
       enable_idf_experimental_features: yes
-
-
-logger:
-  hardware_uart: USB_SERIAL_JTAG
-  level: DEBUG
-  logs:
-    lvgl: INFO
-    display: INFO
-    app: DEBUG
-
-external_components:  
-  - source: github://willumpie82/esphome@dev
-    components: [mipi_dsi]
-  - source: github://kvj/esphome@jd9365_gsl3680
-    refresh: 0s
-    components: [gsl3680]
-  - source: github://esphome/esphome@2025.7.1
-    components: [i2c]
 
 esp_ldo:
   - channel: 3
@@ -74,44 +63,51 @@ esp32_hosted:
 
 psram:
   speed: 200MHz
-
-switch:
-  - id: backlight_
-    platform: gpio
-    pin: GPIO23
-    restore_mode: ALWAYS_ON
-
   
-color:
-  - id: my_red
-    red: 100%
-    green: 0%
-    blue: 0%
+preferences:
+  flash_write_interval: 5min  
 
-# -------------------------------
-# LVGL Display
-# -------------------------------
-display:
-  - platform: mipi_dsi
-    model: JC8012P4A1
-    id: my_display
-    update_interval: 1s
-    reset_pin: GPIO27
 
+# -------------------------------------------
+# Internal outputs
+# -------------------------------------------
+
+output:
+  # Backlight LED
+  - platform: ledc
+    pin: GPIO23
+    id: GPIO23
+    frequency: 100Hz
+    min_power: 0.03
+    zero_means_zero: true
+
+light:
+  - platform: monochromatic
+    output: GPIO23
+    name: Backlight
+    id: backlight
+    restore_mode: RESTORE_DEFAULT_ON
+
+# -------------------------------------------
+# Touchscreen
+# -------------------------------------------
 
 i2c:
-  - id: i2c_bus
+  - id: bus_a
     sda: GPIO7  
     scl: GPIO8  
-    #scan: true
+    scan: true
     frequency: 400kHz 
  
-lvgl:
-  buffer_size: 100%
-  byte_order: little_endian   
-  touchscreens:
-    - touchscreen_id: touchscreen_
-
+i2c_device:
+  - id: i2cdev1
+    address: 0x18
+  - id: i2cdev2
+    address: 0x32
+  - id: i2cdev3
+    address: 0x36
+  - id: i2cdev4
+    address: 0x40
 
 touchscreen:
   - platform: gsl3680
@@ -120,4 +116,89 @@ touchscreen:
     interrupt_pin: GPIO21
     transform:
       swap_xy: false
-      mirror_y: false
+      mirror_x: true
+      mirror_y: false   
+
+# -------------------------------------------
+# Display
+# -------------------------------------------
+display:
+  - platform: guition_mipi_dsi
+    model: JC8012P4A1
+    id: my_display
+    update_interval: never
+    reset_pin: GPIO27
+# TODO    rotation: 180
+    auto_clear_enabled: false
+    color_order: RGB
+    dimensions:
+      width: 800
+      height: 1280
+
+lvgl:
+  byte_order: little_endian
+  
+# -------------------------------------------
+# Audio
+# ------------------------------------------- 
+
+audio_dac:
+  - platform: es8311
+    id: es8311_dac
+    bits_per_sample: 16bit
+    sample_rate: 16000
+    use_microphone: True
+
+i2s_audio:
+  - id: i2s_output
+    i2s_lrclk_pin: GPIO10
+    i2s_bclk_pin: GPIO12
+    i2s_mclk_pin: GPIO13
+
+speaker:
+  - platform: i2s_audio
+    i2s_audio_id: i2s_output
+    id: p4_speaker
+    i2s_dout_pin: GPIO9
+    dac_type: external
+    sample_rate: 16000
+    bits_per_sample: 16bit
+    channel: stereo
+    audio_dac: es8311_dac
+  - platform: mixer
+    id: mixer_speaker_id
+    output_speaker: p4_speaker
+    source_speakers:
+      - id: announcement_spk_mixer_input
+      - id: media_spk_mixer_input
+  - platform: resampler
+    id: media_spk_resampling_input
+    output_speaker: media_spk_mixer_input
+  - platform: resampler
+    id: announcement_spk_resampling_input
+    output_speaker: announcement_spk_mixer_input
+
+media_player:
+  - platform: speaker
+    name: "Speaker Media Player"
+    id: speaker_media_player_id
+    media_pipeline:
+        speaker: media_spk_resampling_input
+        num_channels: 2
+    announcement_pipeline:
+        speaker: announcement_spk_resampling_input
+        num_channels: 1
+        
+microphone:
+  - platform: i2s_audio
+    id: p4_microphone
+    i2s_din_pin: GPIO11
+    sample_rate: 16000
+    bits_per_sample: 16bit
+    adc_type: external
+
+#audio_adc:
+#  - platform: es8311
+#    id: es8311_adc
+#    bits_per_sample: 16bit
+#    sample_rate: 16000

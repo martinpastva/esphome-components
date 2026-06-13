@@ -1,0 +1,1 @@
+# Guition JC8012P4A1 ESPHome
