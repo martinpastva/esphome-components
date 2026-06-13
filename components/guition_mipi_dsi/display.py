@@ -202,10 +202,9 @@ async def to_code(config):
     width, height, _offset_width, _offset_height = model.get_dimensions(config)
     var = cg.new_Pvariable(config[CONF_ID], width, height, color_depth, pixel_mode)
 
-    sequence, madctl = model.get_sequence(config)
+    sequence = model.get_sequence(config)
     cg.add(var.set_model(config[CONF_MODEL]))
     cg.add(var.set_init_sequence(sequence))
-    cg.add(var.set_madctl(madctl))
     cg.add(var.set_invert_colors(config[CONF_INVERT_COLORS]))
     cg.add(var.set_hsync_pulse_width(config[CONF_HSYNC_PULSE_WIDTH]))
     cg.add(var.set_hsync_back_porch(config[CONF_HSYNC_BACK_PORCH]))
@@ -213,9 +212,9 @@ async def to_code(config):
     cg.add(var.set_vsync_pulse_width(config[CONF_VSYNC_PULSE_WIDTH]))
     cg.add(var.set_vsync_back_porch(config[CONF_VSYNC_BACK_PORCH]))
     cg.add(var.set_vsync_front_porch(config[CONF_VSYNC_FRONT_PORCH]))
-    cg.add(var.set_pclk_frequency(int(config[CONF_PCLK_FREQUENCY] / 1e6)))
+    cg.add(var.set_pclk_frequency(config[CONF_PCLK_FREQUENCY] / 1.0e6))
     cg.add(var.set_lanes(int(config[CONF_LANES])))
-    cg.add(var.set_lane_bit_rate(int(config[CONF_LANE_BIT_RATE] / 1e6)))
+    cg.add(var.set_lane_bit_rate(config[CONF_LANE_BIT_RATE] / 1.0e6)
     if reset_pin := config.get(CONF_RESET_PIN):
         reset = await cg.gpio_pin_expression(reset_pin)
         cg.add(var.set_reset_pin(reset))
