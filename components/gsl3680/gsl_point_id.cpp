@@ -17,6 +17,7 @@
 // #include "bsp/lcd_gsl3680.h"
 #include "gsl_point_id.h"
 #include "stdio.h"
+#include "esp_log.h" // TODO
 
 #define GSL_VERSION                                                            \
 	0x20160901 /* NO GESTURE VERSION COME FROM VERSION 20150706 */
