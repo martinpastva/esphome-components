@@ -1,0 +1,123 @@
+substitutions:
+  device_name: "esp32p4tablet"
+  friendly_name: "ESP32 P4 tablet"
+  comment: "esp32-P4"
+  api_password:  !secret display_api
+  ota_password: !secret wifi_password
+  wifi_ssid: !secret wifi_ssid
+  wifi_password: !secret wifi_password
+
+
+esphome:
+  name: ${device_name}
+  comment: ${comment}
+  friendly_name: ${friendly_name}
+
+api:
+  encryption:
+    key: ${api_password}
+
+ota:
+  - platform: esphome
+    id: my_ota
+    password: ${ota_password}
+
+wifi:
+  networks:
+    - ssid: ${wifi_ssid}
+      password: ${wifi_password}
+  ap:
+    ssid: ${device_name}
+    password: ${wifi_password}
+
+esp32:
+  board: esp32-p4-evboard
+  cpu_frequency: 400MHz
+  flash_size: 16MB
+  framework:
+    type: esp-idf
+    advanced:
+      enable_idf_experimental_features: yes
+
+
+logger:
+  hardware_uart: USB_SERIAL_JTAG
+  level: DEBUG
+  logs:
+    lvgl: INFO
+    display: INFO
+    app: DEBUG
+
+external_components:  
+  - source: github://willumpie82/esphome@dev
+    components: [mipi_dsi]
+  - source: github://kvj/esphome@jd9365_gsl3680
+    refresh: 0s
+    components: [gsl3680]
+  - source: github://esphome/esphome@2025.7.1
+    components: [i2c]
+
+esp_ldo:
+  - channel: 3
+    voltage: 2.5V
+
+esp32_hosted:
+  variant: ESP32C6
+  reset_pin: 54
+  cmd_pin: 19
+  clk_pin: 18
+  d0_pin: 14
+  d1_pin: 15
+  d2_pin: 16
+  d3_pin: 17
+  active_high: true
+
+psram:
+  speed: 200MHz
+
+switch:
+  - id: backlight_
+    platform: gpio
+    pin: GPIO23
+    restore_mode: ALWAYS_ON
+
+  
+color:
+  - id: my_red
+    red: 100%
+    green: 0%
+    blue: 0%
+
+# -------------------------------
+# LVGL Display
+# -------------------------------
+display:
+  - platform: mipi_dsi
+    model: JC8012P4A1
+    id: my_display
+    update_interval: 1s
+    reset_pin: GPIO27
+
+
+i2c:
+  - id: i2c_bus
+    sda: GPIO7  
+    scl: GPIO8  
+    #scan: true
+    frequency: 400kHz 
+ 
+lvgl:
+  buffer_size: 100%
+  byte_order: little_endian   
+  touchscreens:
+    - touchscreen_id: touchscreen_
+
+
+touchscreen:
+  - platform: gsl3680
+    id: touchscreen_
+    reset_pin: GPIO22
+    interrupt_pin: GPIO21
+    transform:
+      swap_xy: false
+      mirror_y: false
