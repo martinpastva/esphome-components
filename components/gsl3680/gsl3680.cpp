@@ -27,7 +27,7 @@ void GSL3680::setup() {
     this->interrupt_pin_->setup();
     this->attach_interrupt_(this->interrupt_pin_, gpio::INTERRUPT_FALLING_EDGE);
 
-    gsl_DataInit(gsl_config_data_id);
+// TODO    gsl_DataInit(gsl_config_data_id);
     ESP_LOGI(TAG, "Setup complete");
 }
 
